@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Funcionário Cadastrado</title>
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; }
+        b { color: #0056b3; }
+        ul { list-style-type: none; padding-left: 0; }
+        li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+<p><strong>Olá,</strong></p>
+<p>Um novo funcionário foi cadastrado em seu sistema.</p>
+<p>Seguem os detalhes:</p>
+<ul>
+    <li><b>Nome:</b> <span th:text="${nome}">Nome do Funcionário</span></li>
+    <li><b>CPF:</b> <span th:text="${cpf}">123.456.789-00</span></li>
+    <li><b>Cargo:</b> <span th:text="${cargos}">Cargo(s) do Funcionário</span></li>
+</ul>
+<p>O cadastro foi concluído com sucesso e o novo colaborador já pode acessar o sistema utilizando as credenciais provisórias enviadas a ele.</p>
+<br/>
+<p><strong>Atenciosamente,</strong></p>
+<b>Equipe i9 Tech</b>
+</body>
+</html>
