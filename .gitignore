@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### Variáveis de Ambiente ###
-application-dev.properties
+src/main/resources/application-dev.properties

@@ -4,27 +4,75 @@
     <meta charset="UTF-8">
     <title>Recuperação de Senha</title>
     <style>
-        body { font-family: Arial, sans-serif; color: #333; }
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            line-height: 1.35;
+            /* espaçamento mais compacto */
+            font-size: 15px;
+            margin: 0;
+            padding: 20px;
+        }
+
+        p {
+            margin: 10px 0;
+            /* diminui espaço entre parágrafos */
+        }
+
         .button {
-            background-color: #007bff;
-            color: #ffffff;
-            padding: 12px 20px;
+            background-color: #0F14B8;
+            color: #ffffff !important;
+            padding: 12px 24px;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 6px;
             display: inline-block;
+            font-weight: bold;
+            font-size: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .button:hover {
+            background-color: #0d1099;
+            transform: translateY(-2px);
+        }
+
+        .center {
+            text-align: center;
+            margin: 20px 0;
         }
     </style>
 </head>
+
 <body>
 <p>Prezado(a) <strong th:text="${nomeFuncionario}">Nome do Funcionário</strong>,</p>
-<p>Foi solicitada uma recuperação de senha para a sua conta da empresa <b th:text="${nomeEmpresa}">Nome da Empresa</b>, associada ao CPF <b th:text="${cpfFuncionario}">CPF</b>.</p>
-<p>Para redefinir sua senha, por favor, clique no botão abaixo:</p>
+
 <p>
-    <a th:href="${linkRecuperacao}" class="button">Redefinir Senha</a>
+    Recebemos uma solicitação de redefinição de senha para a conta vinculada à empresa
+    <strong th:text="${nomeEmpresa}">Nome da Empresa</strong>, associada ao CPF
+    <strong th:text="${cpfFuncionario}">CPF</strong>.
 </p>
-<p>Este link expirará em 30 minutos. Se você não solicitou esta recuperação, por favor, ignore este e-mail.</p>
-<br>
-<p>Atenciosamente,</p>
-<p><b>Equipe i9 Tech</b></p>
+
+<p>
+    Para garantir a segurança de seus dados e permitir o acesso à conta,
+    solicitamos que realize a atualização de senha clicando no botão abaixo:
+</p>
+
+
+<a th:href="${linkRecuperacao}" class="button">Redefinir Senha 🔒</a>
+
+<p>
+    Este link tem validade de <strong>30 minutos</strong>. Após esse período, será necessário realizar uma nova
+    solicitação de recuperação.
+</p>
+
+<p>
+    Caso não tenha solicitado esta redefinição, pedimos que desconsidere esta mensagem.
+    Nenhuma alteração será realizada em sua conta sem a sua confirmação.
+</p>
+
+<p>Atenciosamente, <b>Equipe i9 Tech</b></p>
+<img src="https://i.imgur.com/tUdgAcs.png" alt="Inove Technology" style="width:50px; margin-top:10px;">
 </body>
+
 </html>

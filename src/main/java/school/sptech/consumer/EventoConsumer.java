@@ -73,7 +73,7 @@ public class EventoConsumer {
                 "nomeFuncionario", nome,
                 "nomeEmpresa", empresa,
                 "cpfFuncionario", cpf,
-                "linkRecuperacao", frontendUrl + token
+                "linkRecuperacao", frontendUrl + "/redefinir-senha/" + token
         );
 
         emailService.enviarEmailComTemplate(email, assunto, nomeTemplate, variaveis);
