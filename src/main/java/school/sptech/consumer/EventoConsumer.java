@@ -23,6 +23,7 @@ public class EventoConsumer {
     @RabbitListener(queues = "notificacoes.master.queue")
     public void processarEvento(@Payload EventoNotificacaoDto evento) {
         System.out.println("Evento recebido: " + evento.tipoEvento());
+        System.out.println("Payload do evento: " + evento.payload());
 
         switch (evento.tipoEvento()) {
             case "FUNCIONARIO_CADASTRADO":
