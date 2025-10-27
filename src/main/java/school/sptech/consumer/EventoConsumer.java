@@ -76,7 +76,7 @@ public class EventoConsumer {
         String assunto = "Recuperação de Senha i9 Tech";
         String nomeTemplate = "recuperacao-senha";
         if (email == null || email.isBlank()) {
-        System.err.println("Evento ignorado: e-mail ausente para evento " + evento);
+        System.err.println("Evento ignorado: e-mail ausente para evento RECUPERACAO_SENHA");
         return;
         }
         Map<String, Object> variaveis = Map.of(
@@ -93,7 +93,7 @@ public class EventoConsumer {
         String email = (String) payload.get("email");
 
         if (email == null || email.isBlank()) {
-        System.err.println("Evento ignorado: e-mail ausente para evento " + evento);
+        System.err.println("Evento ignorado: e-mail ausente para evento CHAMADA_ACAO_SITE");
         return;
         }
 
