@@ -95,7 +95,7 @@ public class EventoConsumer {
         if (email == null || email.isBlank()) {
         System.err.println("Evento ignorado: e-mail ausente para evento " + evento);
         return;
-        
+        }
 
         String assunto = "Uma oferta especial da i9 Tech para você!";
         String nomeTemplate = "contato-interesse";
