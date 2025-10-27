@@ -18,6 +18,9 @@ services:
       SPRING_PROFILES_ACTIVE: dev
       SERVER_PORT: 8087
       
+    networks:
+      - i9-server_app-network
+        
   # ----------------------------------------------------
   # 2. Serviço: Javamail Microservice
   # ----------------------------------------------------
@@ -34,4 +37,10 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: dev
       SERVER_PORT: 8086
+
+    networks:
+      - i9-server_app-network  
       
+networks:
+  i9-server_app-network:
+    external: true   
