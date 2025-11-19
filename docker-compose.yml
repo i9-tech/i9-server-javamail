@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # ----------------------------------------------------
+  # 1. Serviço: Twilio Microservice
+  # ----------------------------------------------------
+  twilio:
+    build:
+      context: ./i9-server-twilio
+      dockerfile: Dockerfile
+    
+    image: twilio-microservice:latest
+    
+    ports:
+      - "8087:8087"
+      
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SERVER_PORT: 8087
+      
+    networks:
+      - i9-server_app-network
+        
+  # ----------------------------------------------------
+  # 2. Serviço: Javamail Microservice
+  # ----------------------------------------------------
+  javamail:
+    build:
+      context: ./i9-server-javamail
+      dockerfile: Dockerfile
+      
+    image: javamail-microservice:latest
+    
+    ports:
+      - "8086:8086"
+      
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SERVER_PORT: 8086
+
+    networks:
+      - i9-server_app-network  
+      
+networks:
+  i9-server_app-network:
+    external: true   
