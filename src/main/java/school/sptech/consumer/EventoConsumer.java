@@ -23,6 +23,7 @@ public class EventoConsumer {
     @RabbitListener(queues = "notificacoes.master.queue")
     public void processarEvento(@Payload EventoNotificacaoDto evento) {
         System.out.println("Evento recebido: " + evento.tipoEvento());
+        System.out.println("Payload do evento: " + evento.payload());
 
         switch (evento.tipoEvento()) {
             case "FUNCIONARIO_CADASTRADO":
@@ -43,22 +44,28 @@ public class EventoConsumer {
     }
 
     private void handleFuncionarioCadastrado(Map<String, Object> payload) {
-        String nome = (String) payload.get("nome");
-        String cpf = (String) payload.get("cpf");
-        String cargos = (String) payload.get("cargos");
-        String email = (String) payload.get("email");
+    String nome = (String) payload.get("nome");
+    String cpf = (String) payload.get("cpf");
+    String cargos = (String) payload.get("cargos");
+    String email = (String) payload.get("email");
 
-        String assunto = "Alerta de Cadastro de Funcionário!";
-        String nomeTemplate = "email-boas-vindas";
-        Map<String, Object> variaveis = Map.of(
-                "nome", nome,
-                "cpf", cpf,
-                "cargos", cargos,
-                "email", email
-        );
-
-        emailService.enviarEmailComTemplate(email, assunto, nomeTemplate, variaveis);
+    if (email == null || email.isBlank()) {
+        System.err.println("Evento ignorado: e-mail ausente ou inválido para funcionário " + nome);
+        return;
     }
+
+    String assunto = "Alerta de Cadastro de Funcionário!";
+    String nomeTemplate = "email-boas-vindas";
+    Map<String, Object> variaveis = Map.of(
+            "nome", nome,
+            "cpf", cpf,
+            "cargos", cargos,
+            "email", email
+    );
+
+    emailService.enviarEmailComTemplate(email, assunto, nomeTemplate, variaveis);
+}
+
 
     private void handleRecuperacaoSenha(Map<String, Object> payload) {
         String email = (String) payload.get("email");
@@ -69,6 +76,10 @@ public class EventoConsumer {
 
         String assunto = "Recuperação de Senha i9 Tech";
         String nomeTemplate = "recuperacao-senha";
+        if (email == null || email.isBlank()) {
+        System.err.println("Evento ignorado: e-mail ausente para evento RECUPERACAO_SENHA");
+        return;
+        }
         Map<String, Object> variaveis = Map.of(
                 "nomeFuncionario", nome,
                 "nomeEmpresa", empresa,
@@ -81,6 +92,11 @@ public class EventoConsumer {
 
     private void handleChamadaAcao(Map<String, Object> payload) {
         String email = (String) payload.get("email");
+
+        if (email == null || email.isBlank()) {
+        System.err.println("Evento ignorado: e-mail ausente para evento CHAMADA_ACAO_SITE");
+        return;
+        }
 
         String assunto = "Uma oferta especial da i9 Tech para você!";
         String nomeTemplate = "contato-interesse";

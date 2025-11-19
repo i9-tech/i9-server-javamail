@@ -34,3 +34,5 @@ build/
 
 ### Variáveis de Ambiente ###
 src/main/resources/application-dev.properties
+
+docker-compose.yml
