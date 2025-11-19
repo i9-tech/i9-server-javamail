@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import school.sptech.dto.EventoNotificacaoDto;
 import school.sptech.service.EmailService;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -44,27 +45,27 @@ public class EventoConsumer {
     }
 
     private void handleFuncionarioCadastrado(Map<String, Object> payload) {
-    String nome = (String) payload.get("nome");
-    String cpf = (String) payload.get("cpf");
-    String cargos = (String) payload.get("cargos");
-    String email = (String) payload.get("email");
+        String nome = (String) payload.get("nome");
+        String cpf = (String) payload.get("cpf");
+        String cargos = (String) payload.get("cargos");
+        String email = (String) payload.get("email");
 
-    if (email == null || email.isBlank()) {
-        System.err.println("Evento ignorado: e-mail ausente ou inválido para funcionário " + nome);
-        return;
+        if (email == null || email.isBlank()) {
+            System.err.println("Evento ignorado: e-mail ausente ou inválido para funcionário " + nome);
+            return;
+        }
+
+        String assunto = "Alerta de Cadastro de Funcionário!";
+        String nomeTemplate = "email-boas-vindas";
+        Map<String, Object> variaveis = Map.of(
+                "nome", nome,
+                "cpf", cpf,
+                "cargos", cargos,
+                "email", email
+        );
+
+        emailService.enviarEmailComTemplate(email, assunto, nomeTemplate, variaveis);
     }
-
-    String assunto = "Alerta de Cadastro de Funcionário!";
-    String nomeTemplate = "email-boas-vindas";
-    Map<String, Object> variaveis = Map.of(
-            "nome", nome,
-            "cpf", cpf,
-            "cargos", cargos,
-            "email", email
-    );
-
-    emailService.enviarEmailComTemplate(email, assunto, nomeTemplate, variaveis);
-}
 
 
     private void handleRecuperacaoSenha(Map<String, Object> payload) {
@@ -77,8 +78,8 @@ public class EventoConsumer {
         String assunto = "Recuperação de Senha i9 Tech";
         String nomeTemplate = "recuperacao-senha";
         if (email == null || email.isBlank()) {
-        System.err.println("Evento ignorado: e-mail ausente para evento RECUPERACAO_SENHA");
-        return;
+            System.err.println("Evento ignorado: e-mail ausente para evento RECUPERACAO_SENHA");
+            return;
         }
         Map<String, Object> variaveis = Map.of(
                 "nomeFuncionario", nome,
@@ -92,16 +93,38 @@ public class EventoConsumer {
 
     private void handleChamadaAcao(Map<String, Object> payload) {
         String email = (String) payload.get("email");
+        String plano = (String) payload.get("plano");
+        String periodo = (String) payload.get("periodo");
 
         if (email == null || email.isBlank()) {
-        System.err.println("Evento ignorado: e-mail ausente para evento CHAMADA_ACAO_SITE");
-        return;
+            System.err.println("Evento ignorado: e-mail ausente para evento CHAMADA_ACAO_SITE");
+            return;
         }
 
         String assunto = "Uma oferta especial da i9 Tech para você!";
-        String nomeTemplate = "contato-interesse";
-        Map<String, Object> variaveis = Map.of();
+
+        String chave = ((plano == null ? "" : plano.trim().toLowerCase()))
+                + "-"
+                + ((periodo == null ? "" : periodo.trim().toLowerCase()));
+
+        String nomeTemplate = switch (chave) {
+            case "essencial-mensal"     -> "contato-interesse-essencial-mensal";
+            case "essencial-anual"      -> "contato-interesse-essencial-anual";
+            case "profissional-mensal"  -> "contato-interesse-profissional-mensal";
+            case "profissional-anual"   -> "contato-interesse-profissional-anual";
+            case "premium-mensal"       -> "contato-interesse-premium-mensal";
+            case "premium-anual"        -> "contato-interesse-premium-anual";
+            case "-"                    -> "contato-interesse";
+            default -> "contato-interesse";
+        };
+
+        // Variáveis do template, seguro para nulos
+        Map<String, Object> variaveis = new HashMap<>();
+        variaveis.put("plano", plano);
+        variaveis.put("periodo", periodo);
 
         emailService.enviarEmailComTemplate(email, assunto, nomeTemplate, variaveis);
     }
+
+
 }
